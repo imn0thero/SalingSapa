@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SALINGSAPA - Ruang Cari Teman Baru</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 60px 0 40px;
+            position: relative;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffffff;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s ease-in-out infinite;
+        }
+
+        .logo-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 30px rgba(255, 107, 107, 0.3); }
+            to { box-shadow: 0 0 50px rgba(255, 107, 107, 0.6); }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+
+        .welcome-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.2); }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 50px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Room Selection Section */
+        .room-section {
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .room-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1e1e1e 100%);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 30px 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .room-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 18px;
+            z-index: -1;
+        }
+
+        .room-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .room-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff6b6b;
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.2);
+        }
+
+        .room-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .room-status {
+            color: #4ecdc4;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .join-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .join-btn:hover {
+            background: linear-gradient(45deg, #ff5252, #ff6b6b);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Donation Section */
+        .donation-section {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 50px 0;
+            text-align: center;
+            margin: 40px 0;
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+
+        .donation-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .donation-text {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .donate-btn {
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .donate-btn:hover {
+            background: linear-gradient(45deg, #45b7d1, #4ecdc4);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #333;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .room-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(69, 183, 209, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-text">SS</span>
+            </div>
+            <h1 class="welcome-title">SELAMAT DATANG DI SALINGSAPA</h1>
+            <p class="subtitle">Ruang Cari Teman Baru Dengan Menyapa</p>
+        </header>
+
+        <!-- Room Selection Section -->
+        <section class="room-section">
+            <h2 class="section-title">PILIH RUANG</h2>
+            <div class="room-grid">
+                <div class="room-card">
+                    <h3 class="room-name">RUANG 1</h3>
+                    <a href="https://example.com/room1" class="join-btn" target="_blank">Masuk Ruang</a>
+                </div>
+                <div class="room-card">
+                    <h3 class="room-name">RUANG 2</h3>
+                    <a href="https://example.com/room2" class="join-btn" target="_blank">Masuk Ruang</a>
+                </div>
+                <div class="room-card">
+                    <h3 class="room-name">RUANG 3</h3>
+                    <a href="https://example.com/room3" class="join-btn" target="_blank">Masuk Ruang</a>
+                </div>
+                <div class="room-card">
+                    <h3 class="room-name">RUANG 4</h3>
+                    <a href="https://example.com/room4" class="join-btn" target="_blank">Masuk Ruang</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donation Section -->
+        <section class="donation-section">
+            <h2 class="donation-title">Dukung SALINGSAPA</h2>
+            <p class="donation-text">
+                Bantu kami menjaga platform ini tetap berjalan dan bebas iklan.<br>
+                Setiap donasi Anda sangat berarti untuk keberlangsungan komunitas ini.
+            </p>
+            <a href="https://saweria.co/salingsapa" class="donate-btn" target="_blank">Donasi Sekarang</a>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 SALINGSAPA. Semua hak dilindungi. Dibuat dengan ❤️ untuk mempertemukan teman baru.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tambahkan efek parallax sederhana
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.header');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+
+        // Animasi loading saat halaman dimuat
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
